@@ -1,0 +1,27 @@
+language: cpp
+dist: xenial
+os:
+  - linux
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+      env:
+        - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"  
+                    
+before_install:
+  - eval "${MATRIX_EVAL}"
+
+branches:
+  only:
+    - master
+    - /feat\/.*/
+    - /test\/.*/
+    - tmp
+
+script: mkdir -p build && cd build && cmake -DCMAKE_VERBOSE_MAKEFILE=1 .. && make && make test
