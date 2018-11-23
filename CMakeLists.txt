@@ -1,12 +1,11 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 2.8)
 
 project(homeworks)
 include_directories(vendor/catch2/single_include/catch2)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 
 add_library(catch_main STATIC EXCLUDE_FROM_ALL main.cpp)
-
 
 
 file(GLOB SRC_HEADERS *.h)
@@ -19,5 +18,6 @@ function(add_unittest target)
 endfunction()
 
 
-
-add_unittest(palindrome palindrome.cpp)
+add_definitions(-DNODEBUG)
+add_unittest(palindrome_test palindrome.cpp)
+add_unittest(feature_trait_test feature_trait.cpp)
