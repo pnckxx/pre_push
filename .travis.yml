@@ -24,4 +24,4 @@ branches:
     - /test\/.*/
     - tmp
 
-script: mkdir -p build && cd build && cmake -DCMAKE_VERBOSE_MAKEFILE=1 .. && make && make test
+script: mkdir -p build && cd build && cmake -DCMAKE_VERBOSE_MAKEFILE=1 .. && make && make test ARGS='-V'
