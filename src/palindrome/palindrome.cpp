@@ -122,7 +122,6 @@ std::string find_palindrome_longest(const std::string &text)
         }
     };
 
-    uint32_t flags = 0;
     for (size_t i = 1; i < text.length(); ++i) {
         // process palindrome ranges
         if (!ranges.empty()) {

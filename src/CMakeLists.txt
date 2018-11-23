@@ -1,0 +1,37 @@
+add_library(catch_main STATIC EXCLUDE_FROM_ALL catch_main.cpp)
+
+function(add_unittest target)
+    add_executable(${target} ${ARGN} ${SRC_HEADERS})
+    #target_link_libraries(${target} catch_main)
+    set_target_properties(${target} PROPERTIES LINKER_LANGUAGE CXX)
+    add_test(NAME ${target} COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${target} -d yes WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+endfunction()
+
+
+macro(subdir_list result)
+  file(GLOB children LIST_DIRECTORIES true *)
+  set(dirlist "")
+  foreach(child ${children})
+    if(IS_DIRECTORY ${child})
+      list(APPEND dirlist ${child})
+    endif()
+  endforeach()
+  set(${result} ${dirlist})
+endmacro()
+subdir_list(SUBDIRS)
+
+
+foreach(DIR ${SUBDIRS})
+  message(STATUS "Found sub project directory:" ${DIR})
+  get_filename_component(CURRENT_TARGET ${DIR} NAME)
+  file(GLOB_RECURSE CURRENT_SRCS ${DIR}/*.cpp ${DIR}/*.cc ${DIR}/*.c ${DIR}/*.h ${DIR}/*.hpp)
+  file(GLOB MAIN  ${DIR}/main.cpp ${DIR}/main.c ${DIR}/main.cc)
+  add_unittest(${CURRENT_TARGET} ${CURRENT_SRCS})
+  if(EXISTS ${DIR}/CMakeLists.txt)
+    include(${DIR}/CMakeLists.txt)
+  endif()
+  if(NOT "${MAIN}")
+    target_link_libraries(${CURRENT_TARGET} catch_main)
+  endif()
+endforeach()
+

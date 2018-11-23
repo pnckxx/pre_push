@@ -1,0 +1,1 @@
+set_target_properties(${CURRENT_TARGET} PROPERTIES COMPILE_FLAGS "-DNODEBUG")
